@@ -47,9 +47,7 @@ public class Expedia {
         goingToButton.click();
         searchInput.sendKeys(city);
         searchInput.sendKeys(Keys.ENTER);
-
         checkIn.click();
-
 
         WebElement checkInDate_currentMonth = driver.findElement(By.xpath("//button[@class='uitk-new-date-picker-day'][@data-day='13']"));
         wait15.until(ExpectedConditions.elementToBeClickable(checkInDate_currentMonth));
@@ -115,7 +113,7 @@ public class Expedia {
         driver.switchTo().window(windows.get(1));
         // Print hotel name as confirmation
         WebElement hotelName = driver.findElement(By.xpath("//h1[@class='uitk-type-display-700']"));
-        System.out.println(hotelName.getText() + "was picked");
+        System.out.println("A 5 star hotel: " +hotelName.getText() + " was picked");
 
 
         // 4. Book reservation
@@ -124,6 +122,7 @@ public class Expedia {
         WebElement reserveRoomButton = driver.findElement(By.xpath("(//button[@data-stid='submit-hotel-reserve'])[1]"));
         reserveRoomButton.click();
 
+        // Setting a price filter of a flight to destination
         wait15.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//button[@data-test-id='select-button']")));
         new Select(driver.findElement(By.xpath("//select[@id='sortDropdown']"))).selectByValue("price:desc");
 
@@ -175,27 +174,6 @@ public class Expedia {
         new Select(driver.findElement(By.xpath("//select[@data-cko-rfrr-id='MCKO.CKO.DOBDAY']"))).selectByValue("16");
         new Select(driver.findElement(By.xpath("//select[@data-cko-rfrr-id='MCKO.CKO.DOBYEAR']"))).selectByValue("1990");
 
-        // Credit card details
-        WebElement creditCardNumber = driver.findElement(By.xpath("//input[@id='creditCardInput']"));
-        creditCardNumber.sendKeys(myCreditCardNumber);
-        new Select(driver.findElement(By.xpath("//select[@data-tealeaf-name='expirationMonth_1']"))).selectByValue("1");
-        new Select(driver.findElement(By.xpath("//select[@data-tealeaf-name='expirationYear_1']"))).selectByValue("2023");
-        WebElement creditCardSecurityCode = driver.findElement(By.xpath("//input[@id='new_cc_security_code']"));
-        creditCardSecurityCode.sendKeys(myCreditCardSecurityCode);
-
-        // Address and billing details
-        new Select(driver.findElement(By.xpath("//select[@data-cko-rfrr-id='MCKO.CKO.BILLINGCOUNTRY']"))).selectByValue("POL");
-        WebElement street = driver.findElement(By.xpath("//input[@name='creditCards[0].street']"));
-        street.sendKeys(myStreet);
-        WebElement zipCode = driver.findElement(By.xpath("//input[@name='creditCards[0].zipcode']"));
-        zipCode.sendKeys(myZipCode);
-        WebElement city = driver.findElement(By.xpath("//input[@name='creditCards[0].city']"));
-        city.sendKeys(myCity);
-
-        // Email input (last field of the page)
-        WebElement email = driver.findElement(By.xpath("//input[@data-tealeaf-name='email']"));
-        email.sendKeys(myMail);
-
         // Second person
         WebElement firstName2 = driver.findElement(By.xpath("//input[@id='firstname[1]']"));
         firstName2.sendKeys(herFirstName);
@@ -220,6 +198,28 @@ public class Expedia {
         new Select(driver.findElement(By.xpath("(//select[contains(@name, 'dateOfBirth.month')])[3]"))).selectByValue("01");
         new Select(driver.findElement(By.xpath("(//select[contains(@name, 'dateOfBirth.year')])[3]"))).selectByValue("2020");
 
+        // Credit card details
+        WebElement creditCardNumber = driver.findElement(By.xpath("//input[@id='creditCardInput']"));
+        creditCardNumber.sendKeys(myCreditCardNumber);
+        new Select(driver.findElement(By.xpath("//select[@data-tealeaf-name='expirationMonth_1']"))).selectByValue("1");
+        new Select(driver.findElement(By.xpath("//select[@data-tealeaf-name='expirationYear_1']"))).selectByValue("2023");
+        WebElement creditCardSecurityCode = driver.findElement(By.xpath("//input[@id='new_cc_security_code']"));
+        creditCardSecurityCode.sendKeys(myCreditCardSecurityCode);
+
+        // Address and billing details
+        new Select(driver.findElement(By.xpath("//select[@data-cko-rfrr-id='MCKO.CKO.BILLINGCOUNTRY']"))).selectByValue("POL");
+        WebElement street = driver.findElement(By.xpath("//input[@name='creditCards[0].street']"));
+        street.sendKeys(myStreet);
+        WebElement zipCode = driver.findElement(By.xpath("//input[@name='creditCards[0].zipcode']"));
+        zipCode.sendKeys(myZipCode);
+        WebElement city = driver.findElement(By.xpath("//input[@name='creditCards[0].city']"));
+        city.sendKeys(myCity);
+
+        // Email input (last field of the page)
+        WebElement email = driver.findElement(By.xpath("//input[@data-tealeaf-name='email']"));
+        email.sendKeys(myMail);
+
+
         // 6. Get confirmation
         WebElement price = driver.findElement(By.xpath("//span[@class='prod-total-amount']"));
         System.out.println("Total due today: " + price.getText());
@@ -239,10 +239,10 @@ public class Expedia {
         driver.manage().window().maximize();
     }
 
-//    @AfterMethod
-//    public void tearDown() {
-//        driver.quit();
-//    }
+    @AfterMethod
+    public void tearDown() {
+        driver.quit();
+    }
 
     public void defineWebElements() {
         // no WebElement declaration is needed - already declared on the top of the class
