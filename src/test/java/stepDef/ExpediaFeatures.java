@@ -15,7 +15,7 @@ public class ExpediaFeatures {
     WebDriver driver;
 
 
-    @Given("the user is on the booking page")
+    @Given("^the user is on the booking page$")
     public void the_user_is_on_the_booking_page() {
         driver = utilities.DriverFactory.setDriver("chrome");
         driver.manage().timeouts().implicitlyWait(17, TimeUnit.SECONDS);
@@ -25,18 +25,19 @@ public class ExpediaFeatures {
         System.out.println("Reached the booking page");
     }
 
-    @When("user sets the destination city as (.*)")
+    @When("^user sets the destination city as (.*)$")
     public void the_destination(String destination) {
-        System.out.println("Destination:" + destination);
+        System.out.println("Going to: " + destination);
         driver.findElement(By.xpath("//button[@aria-label='Going to']")).click();
         driver.findElement(By.id("location-field-destination")).sendKeys(destination);
         driver.findElement(By.id("location-field-destination")).sendKeys(Keys.ENTER);
     }
 
-    @When("user sets starting city as (.*)")
+    @When("^user sets starting city as (.*)$")
     public void the_starting_location(String startingLocationCity) {
-        System.out.println("Starting location:" + startingLocationCity);
+        System.out.println("Starting from: " + startingLocationCity);
         WebDriverWait wait15 = new WebDriverWait(driver, 15);
+        driver.findElement(By.id("add-flight-switch")).click();
         WebElement startingLocationButton = driver.findElement(By.xpath("//button[@aria-label='Leaving from']"));
         wait15.until(ExpectedConditions.elementToBeClickable(startingLocationButton));
         startingLocationButton.click();
@@ -51,19 +52,19 @@ public class ExpediaFeatures {
 
     }
 
-    @When("user adds a car rent to be included to the bill")
+    @When("^user adds a car rent to be included to the bill$")
     public void user_adds_a_car_rent_to_be_included_to_the_bill() {
         System.out.println("user adds the car");
 
     }
 
-    @When("user adds one child in travelers section of the booking page")
+    @When("^user adds one child in travelers section of the booking page$")
     public void user_adds_one_child_in_travelers_section_of_the_booking_page() {
         System.out.println("user adds one child");
 
     }
 
-    @When("user submits the inserted data")
+    @When("^user submits the inserted data$")
     public void user_submits_the_inserted_data() {
         System.out.println("data submitted");
 
