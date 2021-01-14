@@ -2,28 +2,52 @@ package stepDef;
 
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.util.concurrent.TimeUnit;
 
 public class ExpediaFeatures {
     WebDriver driver;
 
+
     @Given("the user is on the booking page")
     public void the_user_is_on_the_booking_page() {
-        System.out.println("user is on the booking page");
         driver = utilities.DriverFactory.setDriver("chrome");
+        driver.manage().timeouts().implicitlyWait(17, TimeUnit.SECONDS);
         driver.get("https://www.expedia.com/");
-
+        driver.manage().window().maximize();
+        driver.findElement(By.xpath("//div[@class='uitk-tabs-container']/ul/li[1]")).click();
+        System.out.println("Reached the booking page");
     }
 
-    @When("user sets the destination on trip details section of the booking page")
-    public void user_sets_the_destination_on_trip_details_section_of_the_booking_page() {
-        System.out.println("user sets the destination");
-
+    @When("user sets the destination city as (.*)")
+    public void the_destination(String destination) {
+        System.out.println("Destination:" + destination);
+        driver.findElement(By.xpath("//button[@aria-label='Going to']")).click();
+        driver.findElement(By.id("location-field-destination")).sendKeys(destination);
+        driver.findElement(By.id("location-field-destination")).sendKeys(Keys.ENTER);
     }
 
-    @When("user sets the starting location on trip details section of the booking page")
-    public void user_sets_the_starting_location_on_trip_details_section_of_the_booking_page() {
-        System.out.println("user sets the starting location");
+    @When("user sets starting city as (.*)")
+    public void the_starting_location(String startingLocationCity) {
+        System.out.println("Starting location:" + startingLocationCity);
+        WebDriverWait wait15 = new WebDriverWait(driver, 15);
+        WebElement startingLocationButton = driver.findElement(By.xpath("//button[@aria-label='Leaving from']"));
+        wait15.until(ExpectedConditions.elementToBeClickable(startingLocationButton));
+        startingLocationButton.click();
+
+        WebElement startingLocation = driver.findElement(By.xpath("//input[@id='location-field-origin']"));
+        wait15.until(ExpectedConditions.elementToBeClickable(startingLocation));
+        startingLocation.sendKeys(startingLocationCity);
+
+        WebElement startingLocationPick = driver.findElement(By.xpath("(//button[@data-stid='location-field-origin-result-item-button'])[1]"));
+        wait15.until(ExpectedConditions.elementToBeClickable(startingLocationPick));
+        startingLocationPick.click();
 
     }
 
