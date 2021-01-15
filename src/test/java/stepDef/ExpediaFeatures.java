@@ -25,6 +25,32 @@ public class ExpediaFeatures {
         System.out.println("Reached the booking page");
     }
 
+    @When("user is in {string}")
+    public void user_is_in (String city){
+        System.out.println("Starting from: " + city);
+        WebDriverWait wait15 = new WebDriverWait(driver, 15);
+        driver.findElement(By.id("add-flight-switch")).click();
+        WebElement startingLocationButton = driver.findElement(By.xpath("//button[@aria-label='Leaving from']"));
+        wait15.until(ExpectedConditions.elementToBeClickable(startingLocationButton));
+        startingLocationButton.click();
+
+        WebElement startingLocation = driver.findElement(By.xpath("//input[@id='location-field-origin']"));
+        wait15.until(ExpectedConditions.elementToBeClickable(startingLocation));
+        startingLocation.sendKeys(city);
+
+        WebElement startingLocationPick = driver.findElement(By.xpath("(//button[@data-stid='location-field-origin-result-item-button'])[1]"));
+        wait15.until(ExpectedConditions.elementToBeClickable(startingLocationPick));
+        startingLocationPick.click();
+    }
+
+    @When("user wants to go to {string}")
+    public void user_wants_to_go(String whereTo) {
+        System.out.println("Going to: " + whereTo);
+        driver.findElement(By.xpath("//button[@aria-label='Going to']")).click();
+        driver.findElement(By.id("location-field-destination")).sendKeys(whereTo);
+        driver.findElement(By.id("location-field-destination")).sendKeys(Keys.ENTER);
+    }
+
     @When("^user sets the destination city as (.*)$")
     public void the_destination(String destination) {
         System.out.println("Going to: " + destination);
@@ -52,14 +78,14 @@ public class ExpediaFeatures {
 
     }
 
-    @When("^user adds a car rent to be included to the bill$")
-    public void user_adds_a_car_rent_to_be_included_to_the_bill() {
+    @When("^user will need a car$")
+    public void user_will_need_a_car() {
         System.out.println("user adds the car");
 
     }
 
-    @When("^user adds one child in travelers section of the booking page$")
-    public void user_adds_one_child_in_travelers_section_of_the_booking_page() {
+    @When("^user is traveling with one child$")
+    public void user_is_traveling_with_one_child() {
         System.out.println("user adds one child");
 
     }
